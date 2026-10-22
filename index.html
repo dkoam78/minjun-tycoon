@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>민준이 키우기</title>
+<style>
+:root{--bg:#11152a;--panel:#202743;--line:#414d70;--text:#f6f7ff;--muted:#aeb8d8;--mint:#79f2c2;--gold:#ffd36e}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);font-family:system-ui,"Malgun Gothic",sans-serif;background:radial-gradient(ellipse at 50% -10%,#394a78,#1b2340 36%,#101426 75%)}
+button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}
+button:disabled{opacity:.42;cursor:not-allowed}
+.wrap{max-width:1000px;margin:auto;padding:16px 14px 32px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.logo{font-size:clamp(25px,5vw,37px);font-weight:1000;letter-spacing:-1.5px}
+.logo span{color:var(--mint)}
+.tiny,.small{color:var(--muted);font-size:12px}
+.pill{border:1px solid var(--line);background:#171d32;border-radius:999px;padding:8px 12px;font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+.stat,.panel{background:linear-gradient(145deg,#252e4c,#1a2037);border:1px solid var(--line);border-radius:18px;padding:13px;box-shadow:0 8px 25px #0002}
+.stat .label{font-size:12px;color:var(--muted)}
+.stat .value{font-size:clamp(17px,3.7vw,25px);font-weight:950;margin-top:4px;overflow-wrap:anywhere}
+.mint{color:var(--mint)}.gold{color:var(--gold)}
+.hero{display:grid;grid-template-columns:1.08fr .92fr;gap:12px;margin-bottom:12px}
+.petbox{position:relative;min-height:315px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 76%,#547bb0,#293b65 40%,#171d34 78%);border:1px solid #52658e;border-radius:23px;isolation:isolate}
+.stars{position:absolute;inset:0;background-image:radial-gradient(#fff9 1px,transparent 1.5px);background-size:33px 31px;opacity:.32;z-index:-1}
+.cloud{position:absolute;width:110px;height:28px;border-radius:30px;background:#b9e6ff;opacity:.15;animation:cloud 9s linear infinite}
+.cloud.c1{top:27%;left:-120px}.cloud.c2{top:68%;left:-140px;animation-delay:-4.5s}
+@keyframes cloud{to{transform:translateX(650px)}}
+.rankTitle{position:absolute;top:13px;left:50%;transform:translateX(-50%);z-index:5;white-space:nowrap;background:#101729e8;border:1px solid #7387b3;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:1000;color:#ffe28a}
+.pet{position:relative;width:190px;height:205px;animation:bob 2s ease-in-out infinite;cursor:pointer;filter:drop-shadow(0 12px 0 #11162b66);z-index:2}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.head{position:absolute;width:138px;height:116px;left:26px;top:18px;border:5px solid #121521;border-radius:47% 47% 43% 43%;background:#ffdbb7;z-index:3;overflow:hidden}
+.hair{position:absolute;left:-5px;top:-7px;width:140px;height:53px;background:#16171c;border-radius:45% 48% 20% 20%;border-bottom:4px solid #08090d}
+.hair:before,.hair:after{content:"";position:absolute;top:24px;width:32px;height:35px;background:#16171c;border-radius:0 0 18px 18px}
+.hair:before{left:20px;transform:rotate(8deg)}.hair:after{right:22px;transform:rotate(-8deg)}
+.brow{position:absolute;top:48px;width:25px;height:5px;background:#171923;border-radius:5px}
+.brow.l{left:23px;transform:rotate(-8deg)}.brow.r{right:23px;transform:rotate(8deg)}
+.eye{position:absolute;top:57px;width:21px;height:25px;background:white;border:3px solid #161923;border-radius:50%}
+.eye:after{content:"";position:absolute;right:2px;top:6px;width:8px;height:10px;background:#161923;border-radius:50%}
+.eye.l{left:24px}.eye.r{right:24px}
+.cheek{position:absolute;top:82px;width:19px;height:9px;background:#ff9b9b;border-radius:50%;opacity:.7}
+.cheek.l{left:11px}.cheek.r{right:11px}
+.mouth{position:absolute;left:43px;top:83px;width:48px;height:25px;background:#8d243b;border:3px solid #171923;border-radius:8px 8px 20px 20px;overflow:hidden}
+.mouth:after{content:"";position:absolute;left:8px;bottom:-4px;width:27px;height:11px;background:#ff7892;border-radius:50%}
+.body{position:absolute;left:55px;top:125px;width:80px;height:62px;background:#f6f5ef;border:5px solid #121521;border-radius:18px 18px 25px 25px;transform:rotate(-4deg);z-index:2;display:flex;align-items:center;justify-content:center;color:#252b3d;font-size:23px;font-weight:1000}
+.wing{position:absolute;top:117px;width:48px;height:61px;background:#e7f8ff;border:4px solid #121521;border-radius:70% 20% 70% 30%;z-index:1;animation:flap .35s ease-in-out infinite alternate}
+.wing.l{left:10px;transform-origin:right center;transform:rotate(-25deg)}
+.wing.r{right:10px;transform:scaleX(-1) rotate(-25deg);transform-origin:left center}
+@keyframes flap{to{rotate:18deg}}
+.leg{position:absolute;top:177px;width:19px;height:21px;background:#ffbd90;border:4px solid #121521;border-radius:8px;z-index:1}
+.leg.l{left:69px;transform:rotate(25deg)}.leg.r{right:67px;transform:rotate(-25deg)}
+.money{position:absolute;font-size:23px;animation:float 2s ease-in-out infinite;z-index:1}
+.m1{top:25%;left:13%}.m2{top:42%;right:10%;animation-delay:-1s}.m3{bottom:18%;left:18%;animation-delay:-.5s}
+@keyframes float{50%{transform:translateY(-12px) rotate(10deg)}}
+.pet.fly{animation:fly .65s ease-in-out infinite alternate}
+@keyframes fly{to{transform:translate(40px,-28px) rotate(7deg)}}
+.pet.terminator .body{background:#6de6df;color:#102c3b}
+.pet.terminator .head{background:#b7c6d5}
+.pet.terminator .hair,.pet.terminator .hair:before,.pet.terminator .hair:after{background:#303a4b}
+.pet.excited .mouth{height:30px;background:#d92753}
+.pet.full .mouth{height:10px;top:89px;background:#9c5b51}
+.pet.full .wing{animation:none}
+.petbox.excited{box-shadow:inset 0 0 45px #ffbd4d66;border-color:#ffcb5b}
+.petbox.excited:after{content:"🎉 신난 민준이! 🎉";position:absolute;bottom:38px;left:0;right:0;text-align:center;font-size:17px;font-weight:1000;color:#ffe28a;text-shadow:0 2px 8px #ff5a24;animation:party .5s infinite alternate}
+@keyframes party{to{transform:scale(1.05)}}
+.launcher{position:absolute;left:calc(50% - 180px);top:54%;width:88px;height:82px;display:none;z-index:4;animation:launcherBob 1.8s ease-in-out infinite alternate}
+.launcher.show{display:block}
+.launcherBase{position:absolute;bottom:0;left:6px;width:70px;height:43px;background:linear-gradient(145deg,#f0f3ff,#8e9bb9);border:4px solid #121521;border-radius:12px;box-shadow:0 5px 0 #101426}
+.launcherBase:before{content:"";position:absolute;left:16px;top:-26px;width:28px;height:28px;background:#b9c7e8;border:4px solid #121521;border-radius:9px 9px 4px 4px}
+.launcherBarrel{position:absolute;left:34px;top:12px;width:44px;height:19px;background:#657694;border:4px solid #121521;border-radius:7px;transform:rotate(-18deg);transform-origin:left center}
+.launcherBarrel:after{content:"";position:absolute;right:-5px;top:-3px;width:8px;height:17px;background:#e6edff;border:3px solid #121521;border-radius:3px}
+.riceShot{position:absolute;left:53px;top:6px;font-size:18px;z-index:6;pointer-events:none;animation:riceShot .55s ease-out forwards}
+@keyframes riceShot{to{transform:translate(118px,25px) scale(.55) rotate(160deg);opacity:0}}
+@keyframes launcherBob{to{transform:translateY(-3px)}}
+.petNote{position:absolute;bottom:13px;left:0;right:0;text-align:center;font-size:12px;color:#d8e3ff}
+.heroInfo{display:flex;flex-direction:column;gap:10px}
+.levelLine{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.level{font-size:23px;font-weight:1000}
+.bar{height:11px;border-radius:20px;background:#101426;overflow:hidden;border:1px solid #3d4564}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#60dca5,#b4ff9d);border-radius:20px;transition:width .25s}
+.mainbtn{background:linear-gradient(135deg,#75f0bf,#44cba6);color:#12252b;font-weight:1000;border-radius:13px;padding:13px 15px;width:100%;box-shadow:0 4px 0 #288a78;font-size:15px}
+.mainbtn:active{transform:translateY(2px);box-shadow:0 2px 0 #288a78}
+.subbtn{background:#303956;border:1px solid #465273;border-radius:12px;padding:11px 12px;font-weight:800;width:100%;text-align:left;min-height:83px}
+.subbtn .desc{display:block;color:var(--muted);font-size:12px;font-weight:500;margin-top:4px;line-height:1.4}
+.subbtn .cost{float:right;color:var(--gold);font-size:13px;margin-left:6px}
+.sectionTitle{font-weight:950;font-size:18px;margin:0 0 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.shopgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.log{margin-top:12px;max-height:100px;overflow:auto;font-size:12px;color:var(--muted);line-height:1.7}
+.bottom{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:12px}
+.reset{background:transparent;border:1px solid #4b526e;border-radius:10px;padding:8px 10px;color:#aeb6d2;font-size:12px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#f5f6ff;color:#141a2b;border-radius:999px;padding:10px 16px;font-weight:900;box-shadow:0 8px 30px #0005;transition:.2s;pointer-events:none;z-index:50;max-width:92%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.pop{position:absolute;font-weight:1000;color:#b8ffd9;text-shadow:0 2px #123;font-size:20px;animation:pop 1s forwards;pointer-events:none;z-index:6}
+@keyframes pop{to{transform:translateY(-70px);opacity:0}}
+.footer{text-align:center;color:#8490b3;font-size:11px;padding:15px 0 0;line-height:1.8}
+.specialGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.specialCard{background:linear-gradient(145deg,#2b3454,#1b223a);border:1px solid #4a577b;border-radius:13px;padding:11px}
+.specialCard h3{font-size:14px;margin:0 0 5px}
+.specialCard p{font-size:12px;color:var(--muted);margin:0 0 9px;line-height:1.4}
+.specialCard button{background:#3b496c;border:1px solid #53658d;border-radius:9px;padding:8px 10px;font-size:12px;font-weight:850;width:100%;text-align:left}
+.fragmentGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.fragmentCard{background:linear-gradient(145deg,#292f4d,#1a2037);border:1px solid #53618a;border-radius:13px;padding:13px}
+.fragmentCard h3{margin:0 0 8px;font-size:14px}
+.fragmentCard p{font-size:12px;color:var(--muted);min-height:36px;margin:0 0 10px;line-height:1.5}
+.fragmentCard button{background:#39496d;border:1px solid #667ca7;border-radius:9px;padding:10px;width:100%;font-weight:900;text-align:left}
+.fragmentCard button:disabled{opacity:.5}
+@media(max-width:520px){.fragmentGrid{grid-template-columns:1fr}}
+.specialCard button span{float:right;color:var(--gold)}
+.specialCard button:disabled{opacity:.45}
+.feverline{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:12px;color:var(--muted)}
+.feverbar{height:7px;background:#151b2f;border-radius:99px;overflow:hidden;margin-top:5px}
+.feverfill{height:100%;width:0;background:linear-gradient(90deg,#ff9c55,#ffe27c);transition:width .2s}
+.overlay{position:fixed;inset:0;background:#090d1dcc;display:flex;align-items:center;justify-content:center;padding:20px;z-index:30}
+.modal{width:min(460px,100%);background:linear-gradient(145deg,#293452,#171e34);border:1px solid #69799f;border-radius:22px;padding:22px;text-align:center;box-shadow:0 20px 80px #0009}
+.modal h2{margin:0 0 8px;font-size:26px}
+.modal p{color:#c2cce6;font-size:14px;line-height:1.65}
+.modal button{background:linear-gradient(135deg,#75f0bf,#44cba6);color:#132b2a;border-radius:12px;padding:12px 18px;font-weight:1000;width:100%;margin-top:8px}
+.hidden{display:none!important}
+@media(max-width:650px){
+.wrap{padding:12px 10px 25px}.hero{grid-template-columns:1fr}.petbox{min-height:275px}
+.heroInfo{display:grid;grid-template-columns:1fr 1fr}
+.heroInfo .panel:first-child,.heroInfo .mainbtn{grid-column:1/-1}
+.shopgrid{grid-template-columns:1fr}.stat{padding:10px}.stats{gap:6px}
+.stat .value{font-size:17px}.top .pill{padding:7px 9px}.sectionTitle{font-size:17px}
+.specialGrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div><div class="logo">민준이 <span>키우기</span></div><div class="tiny">먹이를 주고 성장시켜, 돈을 물어오는 민준이를 만들자!</div></div>
+  <div class="pill">✦ 자동 저장</div>
+</header>
+
+<section class="stats">
+  <div class="stat"><div class="label">💵 보유 민준달러</div><div class="value gold" id="money">0 MJD</div></div>
+  <div class="stat"><div class="label">⚡ 초당 수익</div><div class="value mint" id="income">0 MJD</div></div>
+  <div class="stat"><div class="label">🎉 다음 보너스 배달</div><div class="value" id="deliveryStat">0 / 10</div></div>
+</section>
+
+<section class="hero">
+<div class="petbox" id="petbox">
+  <div class="stars"></div><div class="cloud c1"></div><div class="cloud c2"></div>
+  <div class="rankTitle" id="rankTitle">뭘 모르는 민준이</div>
+  <span class="money m1">💸</span><span class="money m2">💵</span><span class="money m3">✨</span>
+  <div class="pet" id="pet" title="민준이 클릭!">
+    <div class="wing l"></div><div class="wing r"></div>
+    <div class="head"><div class="hair"></div><div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="cheek l"></div><div class="cheek r"></div><div class="mouth"></div></div>
+    <div class="body">M</div><div class="leg l"></div><div class="leg r"></div>
+  </div>
+  <div class="launcher" id="launcher" aria-label="밥 발사기"><div class="launcherBarrel"></div><div class="launcherBase"></div></div>
+  <div class="petNote" id="petNote">민준이를 눌러 응원하기! · 먹이를 주면 XP 획득</div>
+</div>
+
+<div class="heroInfo">
+  <div class="panel">
+    <div class="levelLine"><div><div class="tiny">민준이 레벨</div><div class="level" id="level">Lv. 1</div></div><div class="pill" id="feedCount">먹이 0회</div></div>
+    <div style="display:flex;justify-content:space-between;margin:13px 0 6px;font-size:12px;color:var(--muted)"><span>경험치 XP</span><span id="xpText">0 / 18</span></div>
+    <div class="bar"><div class="fill" id="xpBar"></div></div>
+    <div style="margin-top:12px;font-size:13px;color:var(--muted)">한 번에 가져오는 돈 <b class="mint" id="haul">10 MJD</b></div>
+    <div style="margin-top:4px;font-size:13px;color:var(--muted)">터미네이터화 <b id="termLevel">0단계</b></div>
+    <div class="feverline"><span id="bonusText">다음 보너스까지 배달 10회</span><b id="bonusStatus">충전 중</b></div>
+    <div class="feverbar"><div class="feverfill" id="bonusFill"></div></div>
+  </div>
+  <button class="mainbtn" id="feedBtn">🍖 먹이 주기 <span id="feedXP">+8 XP</span></button>
+  <button class="mainbtn" id="feedMinjunBtn" style="background:linear-gradient(135deg,#ffd98a,#ffad6b);box-shadow:0 4px 0 #bb7649">🍖 민준이 밥먹이기</button>
+  <div class="panel"><div class="tiny">다음 배달까지</div><div class="level" id="nextTime">30초</div><div class="small" id="nextHint">민준이가 돈을 물고 오는 중...</div></div>
+  <div class="panel"><div class="tiny">현재 상태</div><div style="font-size:17px;font-weight:900;margin-top:5px" id="mood">평범한 민준이</div><div class="small" id="status">먹이를 줘서 레벨을 올려보자.</div></div>
+</div>
+</section>
+
+<section class="panel" style="margin-bottom:12px">
+<h2 class="sectionTitle">🛍️ 민준이 상점 <span class="small">돈을 투자해 성장시키자</span></h2>
+<div class="shopgrid">
+<button class="subbtn" id="termBtn">🤖 터미네이터화 <span class="cost" id="termCost">200 MJD</span><span class="desc">배달 주기를 줄여 더 자주 돈을 가져옴</span><span class="desc" id="termDesc">현재 30초 → 구매 후 20초</span></button>
+<button class="subbtn" id="foodBtn">🥩 먹이 연구 <span class="cost" id="foodCost">10 MJD</span><span class="desc">먹이 한 번에 얻는 XP 증가</span><span class="desc" id="foodDesc">현재 +8 XP → 다음 단계</span></button>
+<button class="subbtn" id="purseBtn">💰 돈주머니 훈련 <span class="cost" id="purseCost">250 MJD</span><span class="desc">민준이의 기본 배달 수익 증가</span><span class="desc" id="purseDesc">현재 배달 수익 증가</span></button>
+<button class="subbtn" id="moneyBtn">📈 수익 최적화 <span class="cost" id="moneyCost">500 MJD</span><span class="desc">모든 배달 수익에 영구 배율 적용</span><span class="desc" id="moneyDesc">현재 1.0x 배율</span></button>
+</div>
+<div class="log" id="log">[시작] 민준이가 첫 배달을 준비하고 있다.</div>
+</section>
+
+<section class="panel" style="margin-bottom:12px">
+ <h2 class="sectionTitle">🚀 밥 발사기 연구실 <span class="small">자동으로 밥 발사!</span></h2>
+ <div class="specialGrid">
+  <div class="specialCard"><h3 id="launcherTitle">🍚 밥 발사기</h3><p id="launcherDesc">구매하면 민준이 옆에 설치돼. 1초마다 자동으로 밥을 줘.</p><button id="launcherBtn">구매 및 설치 <span id="launcherCost">500 MJD</span></button></div>
+ </div>
+</section>
+
+<section class="panel" style="margin-bottom:12px">
+ <h2 class="sectionTitle">🔥 피버타임 연구실 <span class="small">최대 5회마다 보너스!</span></h2>
+ <p class="small" style="margin:0 0 10px">피버타임이 준비되면 다음 배달 수익이 5배가 돼.</p>
+ <div class="specialGrid" id="feverGrid">
+  <div class="specialCard"><h3>🔥 피버타임 1단계</h3><p>필요 배달 횟수 8회</p><button data-fever="0">업그레이드 <span>500 MJD</span></button></div>
+  <div class="specialCard"><h3>🔥 피버타임 2단계</h3><p>필요 배달 횟수 7회</p><button data-fever="1" disabled>이전 단계 필요 <span>1,000 MJD</span></button></div>
+  <div class="specialCard"><h3>🔥 피버타임 3단계</h3><p>필요 배달 횟수 6회</p><button data-fever="2" disabled>이전 단계 필요 <span>2,500 MJD</span></button></div>
+  <div class="specialCard"><h3>🔥 피버타임 4단계</h3><p>필요 배달 횟수 5회</p><button data-fever="3" disabled>이전 단계 필요 <span>4,000 MJD</span></button></div>
+ </div>
+</section>
+
+<section class="panel" id="researchPanel" style="margin-bottom:12px">
+<h2 class="sectionTitle">🧪 특수 연구실 <span class="small">레벨을 올리면 연구 해금!</span></h2>
+<div class="specialGrid">
+<div class="specialCard hidden" id="snackResearchCard"><h3>🍗 간식 영양 연구 <span class="small">Lv.15</span></h3><p>먹이 XP를 영구적으로 35%씩 증가.</p><button id="snackResearchBtn">연구하기 <span id="snackResearchCost">500 MJD</span></button></div>
+<div class="specialCard hidden" id="deliveryResearchCard"><h3>📦 배달 경로 연구 <span class="small">Lv.30</span></h3><p>배달 수익을 영구적으로 35%씩 증가.</p><button id="deliveryResearchBtn">연구하기 <span id="deliveryResearchCost">3,000 MJD</span></button></div>
+<div class="specialCard hidden" id="profitResearchCard"><h3>💎 초고수익 연구 <span class="small">Lv.50</span></h3><p>배달 수익을 영구적으로 40%씩 증가.</p><button id="profitResearchBtn">연구하기 <span id="profitResearchCost">15,000 MJD</span></button></div>
+<div class="specialCard hidden" id="goldResearchCard"><h3>🌟 황금 먹이 연구 <span class="small">Lv.75</span></h3><p>먹이 XP를 영구적으로 75%씩 증가.</p><button id="goldResearchBtn">연구하기 <span id="goldResearchCost">80,000 MJD</span></button></div>
+<div class="specialCard" id="muscleResearchCard"><h3>💪 민준이 근육 단련</h3><p>딱 한 번만 구매 가능. 구매하면 배달 속도가 2배 빨라져!</p><button id="muscleBtn">근육 단련 <span id="muscleCost">250 MJD</span></button><p id="muscleLevelText">현재 근육 0단계 · 배달 속도 ×1</p></div>
+</div>
+</section>
+
+<section class="panel hidden" id="rebirthPanel" style="margin-bottom:12px">
+<h2 class="sectionTitle">♻️ 환생 / 방생 시스템 <span class="small">Lv.100부터 가능</span></h2>
+<p class="small">환생하면 레벨과 일반 업그레이드는 초기화되고, 민준이의 조각을 얻어. 환생 배율은 없어졌어. 레벨 500까지 성장하면 초월할 수 있어!</p>
+<div class="stat" style="margin:10px 0 12px"><div class="label">🧩 민준이의 조각</div><div class="value gold" id="fragmentCount">0개</div><div class="small" id="fragmentHint">환생하면 조각을 얻어.</div></div>
+<button class="mainbtn" id="rebirthBtn">🕊️ 민준이 방생하고 환생하기</button>
+<div class="fragmentGrid">
+<div class="fragmentCard"><h3>🗺️ 민준이 방생지역 이동</h3><p>업그레이드할 때마다 다음 가격이 2배! 환생으로 얻는 조각이 2배씩 늘어나.</p><button id="areaUpgradeBtn">강화 <span id="areaCost">1 조각</span></button><p id="areaLevelText">현재 0단계 · 환생 조각 ×1</p></div>
+<div class="fragmentCard"><h3>🪽 민준이 날개 코팅</h3><p>한 번만 가능. 민준이의 비행 속도가 비약적으로 상승해 배달 속도가 1초로 고정돼.</p><button id="wingBtn">강화 <span>4 조각</span></button><p id="wingText">배달 주기 1초 고정 효과</p></div>
+<div class="fragmentCard"><h3>💨 민준이 비행 훈련</h3><p>한 번만 가능. 민준이가 물어오는 돈이 2배로 증가해.</p><button id="flightBtn">강화 <span>4 조각</span></button><p id="flightText">수익 ×2 효과</p></div>
+<div class="fragmentCard"><h3>🍖 민준이 대식가화</h3><p>한 번만 가능. 먹이를 먹을 때 얻는 경험치 XP가 4배가 돼.</p><button id="eaterBtn">강화 <span>10 조각</span></button><p id="eaterText">먹이 XP ×4 효과</p></div>
+</div>
+<div class="fragmentCard" style="margin-top:10px;border-color:#d8b65d;background:linear-gradient(145deg,#443c2c,#242139)"><h3>✨ 민준이 초월</h3><p>민준이의 레벨 500과 민준이의 조각 1,000개가 필요해. 임시 초월 효과로 수익이 10배가 돼.</p><button class="mainbtn" id="transcendBtn">초월하기 <span id="transcendCost">1,000 조각 · Lv.500</span></button><p id="transcendText">아직 초월하지 않았어.</p></div>
+</section>
+
+<div class="bottom"><span class="tiny">진행 상황은 이 기기에 자동 저장돼.</span><button class="reset" id="resetBtn">초기화</button></div>
+<div class="footer">MINJUN AIRWAYS · MJD BANK · 민준이는 오늘도 돈을 물어옵니다.<br>💡 추천 플레이: 초반에는 오토마우스 없이 직접 먹이를 줘 보세요!<br>⚠️ F12 단속 안내는 개발자 도구 사용을 완전히 차단하지 못해요.</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="overlay" id="startOverlay"><div class="modal"><h2>민준이 키우기</h2><p>먹이를 주고 레벨을 올려 봐! 피버타임을 충전하면 다음 배달 수익이 5배가 돼.</p><p>💡 초반에는 직접 먹이를 주면서 성장시키는 걸 추천해!</p><button id="startBtn" type="button" onclick="document.getElementById('startOverlay').classList.add('hidden')">민준이 키우기 시작!</button></div></div>
+<div class="overlay hidden" id="releaseOverlay"><div class="modal"><h2>🕊️ 민준이 방생 성공!</h2><p id="releaseText">민준이가 하늘로 날아갔어.</p><button id="releaseConfirmBtn">환생하고 다시 시작</button></div></div>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const defaults={money:0,xp:0,level:1,feedCount:0,deliveries:0,term:0,food:0,purse:0,moneyUpgrade:0,rebirths:0,fragments:0,areaUpgrade:0,wingCoating:0,flightTraining:0,bigEater:0,transcended:false,launcher:0,feverLevel:0,research:{snack:0,delivery:0,profit:0,golden:0,muscle:0}};
+let game={...defaults,research:{...defaults.research}};
+try{
+ const saved=JSON.parse(localStorage.getItem('minjunSaveV4')||'null');
+ if(saved)game={...game,...saved,launcher:saved.launcher||0,feverLevel:saved.feverLevel||0,fragments:saved.fragments||0,areaUpgrade:saved.areaUpgrade||0,wingCoating:saved.wingCoating||0,flightTraining:saved.flightTraining||0,bigEater:saved.bigEater||0,transcended:!!saved.transcended,research:{...defaults.research,...(saved.research||{})}};
+}catch(e){}
+let last=Date.now(),cycleProgress=0,toastTimer,fullRemaining=0,excitedReady=false,excitedDeliveries=0,launcherProgress=0;
+const feverCosts=[500,1000,2500,4000],feverNeeds=[8,7,6,5];
+const currentFeverNeed=()=>feverNeeds[Math.min(game.feverLevel,feverNeeds.length-1)]||5;
+excitedDeliveries=game.deliveries%currentFeverNeed();
+const rankName=()=>game.rebirths>=5?'초월한 민준이':['뭘 모르는 민준이','뉴비 민준이','잘나는 민준이','그냥 민준이','돈 잘버는 민준이','민준이 중의 민준이','우주 민준이','울트라 민준이','레전더리 민준이','신 민준이'][Math.min(9,Math.floor((Math.max(1,game.level)-1)/10))];
+const fmt=n=>{
+ if(!Number.isFinite(n))return '∞';
+ if(Math.abs(n)<1000)return Math.floor(n).toLocaleString('ko-KR');
+ const units=['K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];let i=-1;
+ while(n>=1000&&i<units.length-1){n/=1000;i++}
+ let s=n>=100?Math.floor(n):n>=10?n.toFixed(1):n.toFixed(2);
+ return s.replace(/(\.\d*?[1-9])0+$|\.0+$/,'$1')+units[i];
+};
+function needXP(){
+ const lv=Math.max(0,game.level-1);
+ if(lv<15)return Math.floor(18+lv*5+Math.pow(lv,1.25)*.8);
+ if(lv<30)return Math.floor(110+(lv-15)*9+Math.pow(lv-15,1.2)*1.3);
+ if(lv<50)return Math.floor(300+(lv-30)*12+Math.pow(lv-30,1.2)*1.5);
+ if(lv<75)return Math.floor(650+(lv-50)*17+Math.pow(lv-50,1.2)*2);
+ return Math.floor(1250+(lv-75)*28+Math.pow(lv-75,1.2)*3);
+}
+function foodXP(){
+ const f=Math.min(game.food,1000);let base;
+ if(f<=15)base=8+f*4;else if(f<=30)base=68+(f-15)*7;else base=173+(f-30)*10;
+ return Math.floor(base*(1+game.research.snack*.35)*(game.level>=75?1+game.research.golden*.75:1)*(game.bigEater?4:1));
+}
+const intervals=[30,20,15,10,5];
+const termCost=()=>Math.floor(200*Math.pow(5,game.term));
+const foodCost=()=>Math.floor(10*Math.pow(1.5,game.food));
+const purseCost=()=>Math.floor(250*Math.pow(3,game.purse));
+const moneyCost=()=>Math.floor(500*Math.pow(2.5,game.moneyUpgrade));
+const muscleCost=()=>250;
+const cycle=()=>game.wingCoating?1:intervals[Math.min(game.term,4)]/(game.research.muscle>=1?2:1);
+const levelMultiplier=()=>game.level<10?1+game.level*.08:game.level<25?1.8+(game.level-10)*.13:game.level<50?3.75+(game.level-25)*.2:game.level<75?8.75+(game.level-50)*.32:16.75+(game.level-75)*.5;
+const fragmentGain=()=>Math.pow(2,game.areaUpgrade);
+const haul=()=>10*levelMultiplier()*(1+game.term*.2)*Math.pow(1.8,game.purse)*Math.pow(1.3,game.moneyUpgrade)*Math.pow(1.35,game.research.delivery)*Math.pow(1.4,game.research.profit)*(game.flightTraining?2:1)*(game.transcended?10:1);
+const income=()=>haul()/cycle();
+function save(){try{localStorage.setItem('minjunSaveV4',JSON.stringify(game))}catch(e){}}
+function note(t){
+ const log=$('log'),line=document.createElement('div');
+ line.textContent='['+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+'] '+t;
+ log.prepend(line);while(log.children.length>8)log.lastChild.remove();
+}
+function toast(t){
+ const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>el.classList.remove('show'),1800);
+}
+function pop(t){
+ const el=document.createElement('div');el.className='pop';el.textContent=t;
+ el.style.left=(35+Math.random()*30)+'%';el.style.top=(28+Math.random()*24)+'%';
+ $('petbox').appendChild(el);setTimeout(()=>el.remove(),1000);
+}
+function addXP(n){
+ if(game.level>=500)return;
+ game.xp+=n;let levels=0;
+ while(game.level<500&&game.xp>=needXP()){game.xp-=needXP();game.level++;levels++}
+ if(game.level>=500){game.level=500;game.xp=0;note('Lv.500 달성! 이제 민준이 초월을 할 수 있어.');toast('✨ Lv.500 달성! 초월 가능!');}
+ if(levels){note('레벨 업! 민준이 Lv.'+game.level+' 달성!');toast('🎉 민준이 레벨 업! Lv.'+game.level)}
+}
+function purchase(cost,action,label){
+ if(game.money<cost){toast('민준달러가 부족해!');return}
+ game.money-=cost;action();note(label);save();render();
+}
+function researchCost(type){
+ const n=game.research[type];
+ if(type==='snack')return Math.floor(500*2**n);
+ if(type==='delivery')return Math.floor(3000*2.2**n);
+ if(type==='profit')return Math.floor(15000*2.4**n);
+ if(type==='golden')return Math.floor(80000*2.5**n);
+ return Math.floor(250*2**n);
+}
+function buyResearch(type,label){purchase(researchCost(type),()=>game.research[type]++,label+' 연구 완료!')}
+function shootFood(){
+ if(game.launcher<1||game.level>=500)return;
+ const shot=document.createElement('div');shot.className='riceShot';shot.textContent='🍚';$('launcher').appendChild(shot);setTimeout(()=>shot.remove(),700);
+ const n=foodXP();game.feedCount++;addXP(n);fullRemaining=1.2;pop('+'+n+' XP');
+ note('밥 발사기 자동 급식! +'+n+' XP');
+}
+function render(){
+ $('money').textContent=fmt(game.money)+' MJD';
+ $('income').textContent=fmt(income())+' MJD';
+ $('deliveryStat').textContent=excitedReady?'보너스 대기':excitedDeliveries+' / '+currentFeverNeed();
+ $('level').textContent='Lv. '+game.level;
+ $('feedCount').textContent='먹이 '+game.feedCount+'회';
+ $('rankTitle').textContent=rankName();
+ $('xpText').textContent=fmt(game.xp)+' / '+fmt(needXP());
+ $('xpBar').style.width=Math.min(100,game.xp/needXP()*100)+'%';
+ $('haul').textContent=fmt(haul())+' MJD';
+ $('termLevel').textContent=game.term+'단계';
+ $('feedXP').textContent='+'+foodXP()+' XP';
+ $('nextTime').textContent=Math.max(0,Math.ceil(cycle()-cycleProgress))+'초';
+ $('nextHint').textContent='예상 배달 수익 '+fmt(haul()*(excitedReady?5:1))+' MJD'+(excitedReady?' (5배 보너스)':'');
+ $('mood').textContent=fullRemaining>0?'배부른 민준이':excitedReady?'신난 민준이':'평범한 민준이';
+ $('status').textContent=fullRemaining>0?'배불러서 쉬는 중!':excitedReady?'다음 배달 수익 5배!':'민준이가 열심히 배달하고 있어.';
+ $('pet').classList.toggle('excited',excitedReady&&fullRemaining<=0);
+ $('pet').classList.toggle('full',fullRemaining>0);
+ $('pet').classList.toggle('fly',game.term>=2);
+ $('pet').classList.toggle('terminator',game.term>=1);
+ $('petbox').classList.toggle('excited',excitedReady&&fullRemaining<=0);
+ $('petNote').textContent=fullRemaining>0?'배부른 민준이 · '+fullRemaining.toFixed(1)+'초 후 평범해져':excitedReady?'신난 민준이! 다음 배달 수익 5배':'민준이를 눌러 응원하기! · 먹이를 주면 XP 획득';
+ $('bonusText').textContent=excitedReady?'보너스 배달 준비 완료!':'다음 보너스까지 배달 '+(currentFeverNeed()-excitedDeliveries)+'회';
+ $('bonusStatus').textContent=excitedReady?'5배 대기':'충전 중';
+ $('bonusFill').style.width=excitedReady?'100%':(excitedDeliveries/currentFeverNeed()*100)+'%';
+ $('termCost').textContent=game.term>=4?'MAX':fmt(termCost())+' MJD';
+ $('foodCost').textContent=fmt(foodCost())+' MJD';
+ $('purseCost').textContent=fmt(purseCost())+' MJD';
+ $('moneyCost').textContent=fmt(moneyCost())+' MJD';
+ $('termDesc').textContent=game.term>=4?'최대 강화 완료! 기본 배달 주기 5초':'현재 '+intervals[Math.min(game.term,4)]+'초 → 구매 후 '+intervals[Math.min(game.term+1,4)]+'초';
+ $('foodDesc').textContent='현재 +'+foodXP()+' XP · 먹이 연구로 증가';
+ $('purseDesc').textContent='현재 배달 수익 '+fmt(haul())+' MJD → 구매 후 '+fmt(haul()*1.8)+' MJD';
+ $('moneyDesc').textContent='현재 '+Math.pow(1.3,game.moneyUpgrade).toFixed(1)+'x → 구매 후 '+Math.pow(1.3,game.moneyUpgrade+1).toFixed(1)+'x';
+ $('termBtn').disabled=game.money<termCost()||game.term>=4;
+ $('foodBtn').disabled=game.money<foodCost();
+ $('purseBtn').disabled=game.money<purseCost();
+ $('moneyBtn').disabled=game.money<moneyCost();
+ const specs=[['snack',15,'snackResearchCard','snackResearchBtn','snackResearchCost'],['delivery',30,'deliveryResearchCard','deliveryResearchBtn','deliveryResearchCost'],['profit',50,'profitResearchCard','profitResearchBtn','profitResearchCost'],['golden',75,'goldResearchCard','goldResearchBtn','goldResearchCost']];
+ for(const [type,lvl,card,btn,cost] of specs){
+  const unlocked=game.level>=lvl;
+  $(card).classList.toggle('hidden',!unlocked);
+  $(cost).textContent=fmt(researchCost(type))+' MJD';
+  $(btn).disabled=game.money<researchCost(type);
+  $(btn).innerHTML='연구하기 <span>'+fmt(researchCost(type))+' MJD</span>';
+ }
+ $('researchPanel').classList.toggle('hidden',!specs.some(s=>game.level>=s[1])&&game.level<1);
+ $('muscleCost').textContent=fmt(muscleCost())+' MJD';
+ $('muscleLevelText').textContent='현재 근육 '+game.research.muscle+'단계 · 배달 속도 ×'+Math.pow(2,game.research.muscle);
+ $('muscleBtn').disabled=game.money<muscleCost()||game.research.muscle>=1;
+ $('muscleBtn').innerHTML=game.research.muscle>=1?'✅ 근육 단련 완료 <span>구매 완료</span>':'근육 단련 <span>'+fmt(muscleCost())+' MJD</span>';
+ $('launcher').classList.toggle('show',game.launcher>=1);
+ if(game.launcher===0){$('launcherTitle').textContent='🍚 밥 발사기';$('launcherDesc').textContent='구매하면 민준이 옆에 설치돼. 1초마다 자동으로 밥을 줘.';$('launcherBtn').innerHTML='구매 및 설치 <span>500 MJD</span>';$('launcherBtn').disabled=game.money<500;}
+ else if(game.launcher===1){$('launcherTitle').textContent='⚡ 밥 발사기 강화';$('launcherDesc').textContent='설치 완료! 1초마다 자동 급식 중. 강화하면 0.5초마다 밥을 줘.';$('launcherBtn').innerHTML='최종 강화 <span>1,000 MJD</span>';$('launcherBtn').disabled=game.money<1000;}
+ else {$('launcherTitle').textContent='🚀 밥 발사기 MAX';$('launcherDesc').textContent='최종 강화 완료! 0.5초마다 자동으로 밥을 주고 있어.';$('launcherBtn').innerHTML='✅ 최종 강화 완료';$('launcherBtn').disabled=true;}
+ document.querySelectorAll('[data-fever]').forEach(btn=>{const i=Number(btn.dataset.fever);const bought=game.feverLevel>i;const current=game.feverLevel===i;btn.disabled=bought||!current||game.money<feverCosts[i];btn.innerHTML=bought?'✅ 구매 완료 <span>완료</span>':current?'업그레이드 <span>'+fmt(feverCosts[i])+' MJD</span>':'🔒 이전 단계 필요 <span>'+fmt(feverCosts[i])+' MJD</span>';});
+ $('rebirthPanel').classList.toggle('hidden',game.rebirths<1 && game.level<100);
+ $('fragmentCount').textContent=fmt(game.fragments)+'개';
+ $('fragmentHint').textContent='다음 환생 시 '+fmt(fragmentGain())+'개 획득 예정';
+ $('areaCost').textContent=fmt(Math.pow(2,game.areaUpgrade))+' 조각';
+ $('areaLevelText').textContent='현재 '+game.areaUpgrade+'단계 · 환생 조각 ×'+fmt(fragmentGain());
+ $('areaUpgradeBtn').disabled=game.rebirths<1||game.fragments<Math.pow(2,game.areaUpgrade);
+ $('wingBtn').disabled=game.wingCoating||game.fragments<4; $('wingBtn').innerHTML=game.wingCoating?'✅ 구매 완료':'강화 <span>4 조각</span>'; $('wingText').textContent=game.wingCoating?'구매 완료 · 배달 주기 1초 고정':'배달 주기 1초 고정 효과';
+ $('flightBtn').disabled=game.flightTraining||game.fragments<4; $('flightBtn').innerHTML=game.flightTraining?'✅ 구매 완료':'강화 <span>4 조각</span>'; $('flightText').textContent=game.flightTraining?'구매 완료 · 수익 ×2 적용 중':'수익 ×2 효과';
+ $('eaterBtn').disabled=game.bigEater||game.fragments<10; $('eaterBtn').innerHTML=game.bigEater?'✅ 구매 완료':'강화 <span>10 조각</span>'; $('eaterText').textContent=game.bigEater?'구매 완료 · 먹이 XP ×4 적용 중':'먹이 XP ×4 효과';
+ $('transcendBtn').disabled=game.transcended||game.level<500||game.fragments<1000; $('transcendBtn').innerHTML=game.transcended?'✅ 초월 완료':'초월하기 <span>1,000 조각 · Lv.500</span>'; $('transcendText').textContent=game.transcended?'초월 완료! 현재 수익 ×10 적용 중':'필요 조건: Lv.500 + 조각 1,000개';
+}
+$('feedBtn').onclick=()=>{
+ if(game.level>=500){toast('Lv.500에서는 더 성장할 수 없어. 초월하거나 환생해 줘.');return}
+ const n=foodXP();game.feedCount++;addXP(n);pop('+'+n+' XP');
+ $('pet').animate([{transform:'scale(1)'},{transform:'scale(1.09) rotate(-4deg)'},{transform:'scale(1)'}],{duration:250});
+ note('먹이 급여! +'+n+' XP');save();render();
+};
+$('feedMinjunBtn').onclick=()=>{
+ fullRemaining=3;toast('🍖 민준이가 배부르게 먹었어!');
+ note('민준이가 밥을 먹고 배부른 상태가 됐어.');render();
+};
+$('pet').onclick=()=>{
+ pop('힘내 민준!');
+ $('pet').animate([{transform:'scale(1)'},{transform:'scale(1.08) rotate(4deg)'},{transform:'scale(1)'}],{duration:260});
+};
+$('termBtn').onclick=()=>{if(game.term<4)purchase(termCost(),()=>{game.term++;cycleProgress=0},'터미네이터화 '+(game.term+1)+'단계 완료!')};
+$('foodBtn').onclick=()=>purchase(foodCost(),()=>game.food++,'먹이 연구 '+(game.food+1)+'단계 완료!');
+$('purseBtn').onclick=()=>purchase(purseCost(),()=>game.purse++,'돈주머니 훈련 '+(game.purse+1)+'단계 완료!');
+$('moneyBtn').onclick=()=>purchase(moneyCost(),()=>game.moneyUpgrade++,'수익 최적화 '+(game.moneyUpgrade+1)+'단계 완료!');
+// 특수 연구/밥 발사기/피버타임은 위젯 내용이 다시 그려져도 클릭이 유지되도록 이벤트 위임 사용
+ document.addEventListener('click',e=>{
+  const btn=e.target.closest('button');
+  if(!btn)return;
+  const id=btn.id;
+  if(id==='snackResearchBtn'){buyResearch('snack','간식 영양');return;}
+  if(id==='deliveryResearchBtn'){buyResearch('delivery','배달 경로');return;}
+  if(id==='profitResearchBtn'){buyResearch('profit','초고수익');return;}
+  if(id==='goldResearchBtn'){buyResearch('golden','황금 먹이');return;}
+  if(id==='muscleBtn'){
+   if(game.research.muscle>=1){toast('민준이 근육 단련은 한 번만 할 수 있어!');return;}
+   purchase(muscleCost(),()=>{game.research.muscle=1;cycleProgress=0},'민준이 근육 단련 완료! 배달 속도 2배!');return;
+  }
+  if(id==='launcherBtn'){
+   if(game.launcher===0)purchase(500,()=>{game.launcher=1;launcherProgress=0;toast('🚀 밥 발사기가 설치됐어!')},'밥 발사기 설치 완료!');
+   else if(game.launcher===1)purchase(1000,()=>{game.launcher=2;launcherProgress=0;toast('⚡ 밥 발사기 최종 강화 완료!')},'밥 발사기 최종 강화 완료!');
+   return;
+  }
+  if(btn.hasAttribute('data-fever')){
+   const i=Number(btn.dataset.fever);
+   if(i!==game.feverLevel){toast('먼저 이전 피버타임 단계를 구매해 줘!');return;}
+   if(game.money<feverCosts[i]){toast('민준달러가 부족해!');return;}
+   purchase(feverCosts[i],()=>{game.feverLevel++;excitedDeliveries=0;excitedReady=false},'피버타임 '+(i+1)+'단계 강화 완료!'+(i<3?' 필요한 배달 횟수 '+feverNeeds[i+1]+'회!':' 피버타임 최대 단계!'));
+  }
+ });
+function doRebirth(){
+ if(game.level<100)return;
+ const gained=fragmentGain();game.rebirths++;game.fragments+=gained;game.level=1;game.xp=0;game.feedCount=0;game.deliveries=0;
+ game.term=0;game.food=0;game.purse=0;game.moneyUpgrade=0;game.money=0;game.launcher=0;game.feverLevel=0;
+ game.research.muscle=0;fullRemaining=0;excitedReady=false;excitedDeliveries=0;cycleProgress=0;launcherProgress=0;
+ $('releaseOverlay').classList.add('hidden');
+ note('환생 완료! 민준이의 조각 '+fmt(gained)+'개 획득!');
+ toast('♻️ 환생 완료! 조각 '+fmt(gained)+'개 획득!');save();render();
+}
+$('rebirthBtn').onclick=()=>{
+ if(game.level>=100){
+  $('releaseText').textContent='환생 '+(game.rebirths+1)+'회차! 이번 환생으로 민준이의 조각 '+fmt(fragmentGain())+'개를 얻어.';
+  $('releaseOverlay').classList.remove('hidden');
+ }
+};
+$('releaseConfirmBtn').onclick=doRebirth;
+$('areaUpgradeBtn').onclick=()=>{const cost=Math.pow(2,game.areaUpgrade);if(game.fragments<cost){toast('민준이의 조각이 부족해!');return}game.fragments-=cost;game.areaUpgrade++;note('민준이 방생지역 이동 강화! 다음 환생 조각 획득량 2배');save();render();toast('🗺️ 다음 환생 조각 획득량 증가!')};
+$('wingBtn').onclick=()=>{if(game.wingCoating||game.fragments<4)return;game.fragments-=4;game.wingCoating=1;cycleProgress=0;save();render();note('민준이 날개 코팅 완료! 배달 주기 1초 고정');toast('🪽 배달 속도가 1초로 고정됐어!')};
+$('flightBtn').onclick=()=>{if(game.flightTraining||game.fragments<4)return;game.fragments-=4;game.flightTraining=1;save();render();note('민준이 비행 훈련 완료! 수익 2배');toast('💨 배달 수익 2배!')};
+$('eaterBtn').onclick=()=>{if(game.bigEater||game.fragments<10)return;game.fragments-=10;game.bigEater=1;save();render();note('민준이 대식가화 완료! 먹이 XP 4배');toast('🍖 먹이 XP 4배!')};
+$('transcendBtn').onclick=()=>{if(game.transcended){toast('이미 초월했어!');return}if(game.level<500||game.fragments<1000){toast('Lv.500과 조각 1,000개가 필요해!');return}game.fragments-=1000;game.transcended=true;save();render();note('민준이 초월 완료! 수익 10배 적용');toast('✨ 초월 성공! 수익 10배!')};
+$('resetBtn').onclick=()=>{
+ if(!confirm('정말 모든 진행 상황을 초기화할까?'))return;
+ game={...defaults,research:{...defaults.research}};cycleProgress=0;launcherProgress=0;fullRemaining=0;excitedReady=false;excitedDeliveries=0;
+ save();note('새로운 민준이 키우기 시작!');render();toast('초기화 완료');
+};
+$('startBtn').addEventListener('click',()=>{ $('startOverlay').classList.add('hidden'); save(); });
+window.addEventListener('keydown',e=>{
+ const k=e.key.toUpperCase();
+ if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','J','C'].includes(k))){
+  e.preventDefault();toast('⚠️ 개발자 도구 단축키 감지! 브라우저에서 완전 차단할 수는 없어.');
+  note('단속 안내: 개발자 도구 단축키 감지');
+ }
+});
+function tick(){
+ const now=Date.now(),dt=Math.min((now-last)/1000,5);last=now;
+ fullRemaining=Math.max(0,fullRemaining-dt);
+ cycleProgress+=dt;
+ if(game.launcher>=1){launcherProgress+=dt;const launcherInterval=game.launcher>=2?0.5:1;while(launcherProgress>=launcherInterval){launcherProgress-=launcherInterval;shootFood();}}
+ while(cycleProgress>=cycle()){
+  cycleProgress-=cycle();
+  game.deliveries++;
+  let mult=1;
+  if(excitedReady){
+   mult=5;excitedReady=false;excitedDeliveries=0;
+   toast('🎉 신난 민준이! 이번 배달 수익 5배!');
+  }else{
+   excitedDeliveries++;
+   if(excitedDeliveries>=currentFeverNeed()){
+    excitedDeliveries=currentFeverNeed();excitedReady=true;
+    toast('🎉 민준이가 신났어! 다음 배달 수익 5배!');
+    note('배달 10회 완료! 다음 배달 수익 5배!');
+   }
+  }
+  const earned=haul()*mult;game.money+=earned;
+  note(mult===5?'신난 민준이 특별 배달! '+fmt(earned)+' MJD (5배)':'민준이가 '+fmt(earned)+' MJD를 물어왔어!');
+ }
+ render();save();
+}
+render();setInterval(tick,250);
+})();
+</script>
+</body>
+</html>
